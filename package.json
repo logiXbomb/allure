@@ -1,0 +1,59 @@
+{
+  "name": "allure",
+  "version": "0.0.0",
+  "description": "Let's build a better editor",
+  "main": "main.js",
+  "scripts": {
+    "flow": "flow",
+    "start-webpack": "webpack-dev-server --hot --progress --inline --config config/webpack.config.js",
+    "start": "concurrently \"npm run start-webpack\" \"electron -r babel-register .\"",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logiXbomb/allure.git"
+  },
+  "keywords": [
+    "editor",
+    "vim"
+  ],
+  "author": "Seth Lowie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logiXbomb/allure/issues"
+  },
+  "homepage": "https://github.com/logiXbomb/allure#readme",
+  "dependencies": {
+    "electron": "^1.7.11",
+    "monaco-editor": "^0.10.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "concurrently": "^3.5.1",
+    "copy-webpack-plugin": "^4.3.1",
+    "css-loader": "^0.28.9",
+    "flow-bin": "^0.64.0",
+    "jest": "^22.1.4",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "webpack": "^3.10.0",
+    "webpack-copy-plugin": "0.0.4",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "stage-0",
+      "react",
+      "flow"
+    ]
+  }
+}
