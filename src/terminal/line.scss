@@ -1,12 +1,17 @@
 .line {
   .cursor {
     height: 15px;
-    width: 10px;
+    width: 8px;
     background-color: white;
     color: black;
   }
   .active-line {
     display: flex;
+  }
+  .active-line::before {
+    content: '$:';
+    color: green;
+    margin-right: 5px;
   }
   textarea {
     // display: none;
