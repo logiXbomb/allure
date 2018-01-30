@@ -4,12 +4,19 @@ import Line from './Line';
 import './terminal.scss';
 
 class Terminal extends Component {
+  state = {
+    output: []
+  }
+  exec = (str: String) => {
+    this.state.output.push(str);
+    this.setState(this.state);
+  }
   render() {
     return <div className="terminal">
-      <div>
-        OutPut Goes Here
+      <div className="output">
+        {this.state.output.map(o => <span>{o}</span>)}
       </div>
-      <Line />
+      <Line exec={this.exec} />
     </div>
   }
 }
