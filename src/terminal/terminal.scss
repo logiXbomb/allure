@@ -2,5 +2,8 @@
   .output {
     display: flex;
     flex-direction: column;
+    div {
+      height: 15px;
+    }
   }
 }
