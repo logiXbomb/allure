@@ -1,6 +1,7 @@
-import { app, BrowserWindow} from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import url from 'url';
+import shell from 'shelljs';
 
 let win: Object;
 
@@ -27,4 +28,11 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+});
+
+ipcMain.on('exec', (event, arg) => {
+  shell.exec(arg.replace(/\xa0/gmi, ' '), (code, out, err) => {
+    event.returnValue = err || out;
+  });
+  // event.returnValue = 'waffles are great';
 });
