@@ -115,6 +115,7 @@ module.exports = (env) => {
   // / RETURN THE WEBPACK CONFIG ///
   // ///////////////////////////////
   return {
+    target: 'electron',
     entry,
     output,
     plugins,
