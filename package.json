@@ -27,7 +27,8 @@
     "electron": "^1.7.11",
     "monaco-editor": "^0.10.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "shelljs": "^0.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
