@@ -7,6 +7,7 @@ const highlight = str => ({
 });
 
 class Line extends Component {
+  obj;
   state = {
     syntax: [
       <div className="active-line"><div className="cursor"></div></div>
@@ -14,14 +15,14 @@ class Line extends Component {
     raw: '',
   }
   componentDidMount = () => {
-    document.addEventListener('keydown', (event) => {
+    this.obj.addEventListener('keydown', (event) => {
       const key = event.key;
       const newRaw = this.parseLine(this.state.raw, event.key);
       this.state.raw = newRaw;
       this.state.syntax[0] = <div className="active-line" dangerouslySetInnerHTML={highlight(newRaw)}></div>
       this.setState(this.state);
-
-    })
+    });
+    this.obj.focus();
   }
   execLine = (str: String) => {
     this.props.exec(str);
@@ -41,7 +42,7 @@ class Line extends Component {
   }
   render() {
     const { syntax, raw } = this.state;
-    return <div className="line">
+    return <div tabIndex="0" ref={el => { this.obj = el }} className="line">
       {syntax}
     </div>
   }
