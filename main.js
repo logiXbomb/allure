@@ -1,8 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import url from 'url';
-import shell from 'shelljs';
-
+import { spawn } from 'child_process';
 let win: Object;
 
 function createWindow() {
@@ -30,9 +29,16 @@ app.on('activate', () => {
   }
 });
 
+ipcMain.on('cd', (event, arg) => {
+  // const shellInstance = shell.cd(arg);
+});
+
 ipcMain.on('exec', (event, arg) => {
-  shell.exec(arg.replace(/\xa0/gmi, ' '), (code, out, err) => {
-    event.returnValue = err || out;
+  console.log('====> ', arg.command);
+  const thingsToExec = arg.command.split(/\xa0/);
+  const shellInstance = spawn(thingsToExec[0], thingsToExec.slice(1));
+  shellInstance.stdout.on('data', data => {
+    console.log('----->', data);
+    event.sender.send('output', data);
   });
-  // event.returnValue = 'waffles are great';
 });
