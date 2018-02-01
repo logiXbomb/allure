@@ -1,4 +1,7 @@
 .terminal {
+  flex-grow: 1;
+  border-radius: 5px;
+  border: solid 1px white;
   .output {
     display: flex;
     flex-direction: column;
