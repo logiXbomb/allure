@@ -2,47 +2,59 @@
 import React, { Component } from 'react';
 import './line.scss';
 
-const highlight = str => ({
-  __html: `${str.replace(/\b(function|git)/gmi, '<span style="color: #00ffec;">$1</span>')}<div class="cursor"></div>`
-});
+const getTextNodesIn = (node) => {
+  var textNodes = [];
+  if (node.nodeType == 3) {
+    textNodes.push(node);
+  } else {
+    var children = node.childNodes;
+    for (var i = 0, len = children.length; i < len; ++i) {
+      textNodes.push.apply(textNodes, getTextNodesIn(children[i]));
+    }
+  }
+  return textNodes;
+}
 
 class Line extends Component {
-  obj;
-  state = {
-    syntax: [
-      <div className="active-line"><div className="cursor"></div></div>
-    ],
-    raw: '',
-  }
+  line;
   componentDidMount = () => {
-    this.obj.addEventListener('keydown', (event) => {
-      const key = event.key;
-      const newRaw = this.parseLine(this.state.raw, event.key);
-      this.state.raw = newRaw;
-      this.state.syntax[0] = <div className="active-line" dangerouslySetInnerHTML={highlight(newRaw)}></div>
-      this.setState(this.state);
-    });
-    this.obj.focus();
+    this.lineNumber(this.props.col);
   }
-  execLine = (str: String) => {
-    this.props.exec(str);
+  componentWillReceiveProps = (nextProps) => {
+    // if (nextProps.col !== this.props.col) {
+      this.lineNumber(nextProps.col)
+    // }
   }
-  parseLine = (str: String, key: String) => {
-    if (key === 'Enter') {
-      this.execLine(str);
-      return '';
+  lineNumber = (int) => {
+    const start = int;
+    const end = int + 1;
+    const el = this.line.firstChild;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const textNodes = getTextNodesIn(el);
+    var foundStart = false;
+    var charCount = 0, endCharCount;
+
+    for (var i = 0, textNode; textNode = textNodes[i++];) {
+      endCharCount = end;
+      if (!foundStart && start >= charCount && (start < endCharCount || (start == endCharCount && i <= textNodes.length))) {
+        range.setStart(textNode, start - charCount);
+        foundStart = true;
+      }
+      if (foundStart && end <= endCharCount) {
+        range.setEnd(textNode, end - charCount);
+        break;
+      }
+      charCount = endCharCount;
     }
-    if (key === 'Shift') {
-      return str;
-    }
-    if (key === 'Backspace') {
-      return str.substring(0, str.length - 1);
-    }
-    return `${str}${key === ' ' ? '\xa0' : key}`;
+
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
   render() {
-    const { syntax, raw } = this.state;
-    return <div tabIndex="0" ref={el => { this.obj = el }} className="line">
+    const { syntax } = this.props;
+    return <div ref={el => { this.line = el; }} tabIndex="0" className="line">
       {syntax}
     </div>
   }
