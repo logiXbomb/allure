@@ -36,9 +36,9 @@ ipcMain.on('cd', (event, arg) => {
 ipcMain.on('exec', (event, arg) => {
   console.log('====> ', arg.command);
   const thingsToExec = arg.command.split(/\xa0/);
-  const shellInstance = spawn(thingsToExec[0], thingsToExec.slice(1));
+  const shellInstance = spawn(thingsToExec[0], thingsToExec.slice(1), { cwd: arg.dir });
   shellInstance.stdout.on('data', data => {
     console.log('----->', data);
-    event.sender.send('output', data);
+    event.sender.send(`output-${arg.terminalID}`, data);
   });
 });
