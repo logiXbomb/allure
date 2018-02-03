@@ -1,12 +1,16 @@
 .terminal {
   flex-grow: 1;
-  border-radius: 5px;
+  flex-shrink: 1;
+  flex-basis: 0;
+  border-radius: 2px;
   border: solid 1px white;
+  height: 100%;
+  overflow-y: scroll;
   .output {
     display: flex;
     flex-direction: column;
     div {
-      height: 15px;
+      min-height: 15px;
     }
   }
 }
